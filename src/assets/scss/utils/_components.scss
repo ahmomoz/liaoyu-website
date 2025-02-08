@@ -1,0 +1,156 @@
+//--虛線外框
+.border-dashed-blue {
+  border-style: dashed;
+  border-width: 2px; 
+  border-color: #2b4564; 
+}
+
+//--home-text-color
+.home-text-color {
+  color: #4b7098
+}
+
+//--header-nav-link
+.header-nav-link {
+  &.active {
+    border-bottom: 3px solid #2b4564; // 下底線樣式
+  }
+}
+
+//--about背景
+.about-fixed-background {
+  background-image: url('https://raw.githubusercontent.com/ahmomoz/img0106/main/24692753-1.jpg');
+  background-position: center;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  @media (max-width: 1680px) { 
+      background-size: auto 100%;
+  }
+}
+.about-fixed-background h2,
+.about-fixed-background p {
+  position: relative;
+  z-index: 1;
+}
+
+//--about上方漸層效果
+.gradient-border {
+  overflow: hidden;
+  position: relative; 
+
+  &::after {
+    content: ''; 
+    position: absolute; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 150px;
+    background-image: linear-gradient(to bottom, rgba(255,255,255,1), rgba(255, 255, 255, 0));
+  }
+}
+
+//--只有底部陰影效果
+.shadow-bottom {
+  box-shadow: 0px 15px 15px rgba(186, 186, 186, 0.6);;
+}
+
+//--圖片hover效果
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+.image-container img {
+  transition: transform 1s ease; // 放大
+}
+.image-container:hover img {
+  transform: scale(1.2);
+}
+
+//--分類區塊hover效果 & 全部商品中商品卡片hover效果
+.category-hover, .product-card-hover {
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translate(0px, -10px);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+  }
+}
+
+//--link hover
+.link-hover {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px; /* 下底線與文字距離 */
+    width: 0;
+    height: 1px; /* 下底線的粗細 */
+    background-color: #383838; /* 下底線顏色 */
+    transition: width 0.3s ease; /* 過度效果，控制寬度的動畫*/
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+//--footer-link-hover
+.footer-link-hover {
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+//--article hover
+.article-hover {
+  transition: transform 0.3s ease;
+
+  &:hover {
+      background: #f1f1f1;
+      transform: translateX(30px);
+  }
+}
+
+//--頁碼
+.page-link {
+  margin: 0px 10px;
+}
+
+//--cart背景
+.cart-bg {
+  background-image: url('https://raw.githubusercontent.com/ahmomoz/img0106/main/cart-bg4.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+//--回頂部固定按鈕
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1000;
+  border: none;
+  background-color: transparent;
+  transition: transform 0.3s ease;
+  
+  @media (max-width: 768px) { 
+      bottom: 10px;
+      right: 10px;
+  }
+}
+.scroll-to-top-btn:hover {
+  transform: scale(1.1); 
+  background-color: rgba(255, 255, 255, 0.3); 
+}
+.scroll-to-top-btn img {
+  width: 100px; 
+  height: auto; 
+
+  @media (max-width: 768px) { 
+    width: 76px;
+  }
+}

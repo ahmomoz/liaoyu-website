@@ -1,0 +1,11 @@
+@import "bootstrap/scss/functions";
+
+@import './utils/components.scss';
+@import './utils/base.scss';
+@import './utils/variables.scss';
+
+@import "bootstrap";
+
+@import "./components/Loader.scss";
+
+@import "./pages/not-found.scss";
