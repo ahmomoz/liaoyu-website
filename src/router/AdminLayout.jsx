@@ -1,16 +1,12 @@
-import PropTypes from "prop-types";
+import { Outlet } from "react-router-dom";
 
 import AdminHeader from "../components/layout/AdminHeader";
 
-export default function AdminLayout({ children }) {
+export default function AdminLayout() {
   return (
     <>
       <AdminHeader />
-      {children}
+      <Outlet /> 
     </>
   );
 }
-
-AdminLayout.propTypes = {
-  children: PropTypes.node.isRequired,
-};

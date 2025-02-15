@@ -1,19 +1,24 @@
 import { useState, useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useDispatch } from "react-redux";
 
 import axios from "axios";
 import Swal from "sweetalert2";
 
 import Loader from "../../../components/common/Loader";
+import { createAsyncMessage } from "../../../slice/messageSlice";
 
 const { VITE_API_BASE, VITE_API_PATH } = import.meta.env;
 
 export default function ProductDetail() {
   // loading
   const [loadingState, setLoadingState] = useState(true);
-  const { id } = useParams();
 
+  // message toast
+  const dispatch = useDispatch();
+
+  const { id } = useParams();
   // 取得產品資料函式
   const [productList, setProductList] = useState({ imagesUrl: [] });
   const getProductData = async () => {
@@ -53,15 +58,9 @@ export default function ProductDetail() {
         `${VITE_API_BASE}/api/${VITE_API_PATH}/cart`,
         item
       );
-      Swal.fire({
-        title: result.data.message,
-        icon: "success",
-      });
+      dispatch(createAsyncMessage(result.data))
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: error.response.data.message,
-      });
+      dispatch(createAsyncMessage(error.response.data))
     } finally {
       setLoadingState(false);
     }

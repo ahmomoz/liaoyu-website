@@ -1,17 +1,22 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useDispatch } from "react-redux";
 
 import axios from "axios";
 import Swal from "sweetalert2";
 
 import Loader from "../../../components/common/Loader";
+import { createAsyncMessage } from "../../../slice/messageSlice";
 
 const { VITE_API_BASE, VITE_API_PATH } = import.meta.env;
 
 export default function Cart() {
   // loading
   const [loadingState, setLoadingState] = useState(true);
+
+  // message toast
+  const dispatch = useDispatch();
 
   // 刪除購物車內產品函式
   const deleteCartProduct = async (id) => {
@@ -20,19 +25,10 @@ export default function Cart() {
       const result = await axios.delete(
         `${VITE_API_BASE}/api/${VITE_API_PATH}/cart/${id}`
       );
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: result.data.message,
-        showConfirmButton: false,
-        timer: 700,
-      });
+      dispatch(createAsyncMessage(result.data))
       getCartListData();
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: error.response.data.message,
-      });
+      dispatch(createAsyncMessage(error.response.data))
     } finally {
       setLoadingState(false);
     }
@@ -54,17 +50,10 @@ export default function Cart() {
           const result = await axios.delete(
             `${VITE_API_BASE}/api/${VITE_API_PATH}/carts`
           );
-
-          Swal.fire({
-            title: result.data.message,
-            icon: "success",
-          });
+          dispatch(createAsyncMessage(result.data))
           getCartListData();
         } catch (error) {
-          Swal.fire({
-            icon: "error",
-            title: error.response.data.message,
-          });
+          dispatch(createAsyncMessage(error.response.data))
         } finally {
           setLoadingState(false);
         }
@@ -75,7 +64,6 @@ export default function Cart() {
   // 更新購物車產品數量函式
   const updateCartNum = async (product_id, id, e) => {
     e.preventDefault();
-    console.log(id);
     const newQty = parseInt(e.target.value);
     const item = {
       data: {
@@ -89,19 +77,10 @@ export default function Cart() {
         `${VITE_API_BASE}/api/${VITE_API_PATH}/cart/${id}`,
         item
       );
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: result.data.message,
-        showConfirmButton: false,
-        timer: 700,
-      });
+      dispatch(createAsyncMessage(result.data))
       getCartListData();
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: error.response.data.message,
-      });
+      dispatch(createAsyncMessage(error.response.data))
     } finally {
       setLoadingState(false);
     }

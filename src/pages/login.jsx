@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 import axios from "axios";
-import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
 import Loader from "../components/common/Loader";
@@ -30,10 +29,9 @@ export default function Login() {
         formData
       );
       const { token, expired } = result.data;
-      Cookies.set("accessToken", token, {
-        expires: new Date(expired),
-        path: "/",
-      });
+      document.cookie = `authToken=${token}; expires=${new Date(
+        expired
+      )}; path=/`;
       axios.defaults.headers.common.Authorization = token;
 
       Swal.fire({
@@ -58,18 +56,34 @@ export default function Login() {
     setFormData((state) => ({ ...state, [name]: value }));
   };
 
-  // 首次進入頁面執行
-  const token = Cookies.get("accessToken");
-  useEffect(() => {
-    if (!token) {
-      Swal.fire({
-        icon: "warning",
-        title: "未登入",
-        text: "請先登入以檢視產品資料。",
-      });
-      navigate("/login");
-    } else {
+  // 驗證身分
+  const loginCheck = async (token) => {
+    setLoadingState(true);
+    try {
+      axios.defaults.headers.common.Authorization = token;
+      await axios.post(`${VITE_API_BASE}/api/user/check`);
       navigate("/admin");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "驗證錯誤",
+        text: error.message,
+      });
+    } finally {
+      setLoadingState(false);
+    }
+  };
+
+  // 首次進入頁面執行 - 驗證身分
+  useEffect(() => {
+    const token =
+      document.cookie.replace(
+        /(?:(?:^|.*;\s*)authToken\s*=\s*([^;]*).*$)|^.*$/,
+        "$1"
+      ) || null;
+
+    if (token) {
+      loginCheck(token);
     }
   }, []);
 

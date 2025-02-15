@@ -11,7 +11,7 @@ export default function FormInput({
   return (
     <>
       <label htmlFor={id} className="form-label">
-        {labelText}
+      <span className="text-danger">*</span> {labelText}
       </label>
       <input
         type={type}
